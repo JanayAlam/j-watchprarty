@@ -1,0 +1,89 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "J Watchparty REST API",
+    "description": "",
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/softprops/openapi/blob/master/LICENSE"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for the users in the system"
+    }
+  ],
+  "schemas": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": [ "Users" ],
+        "description": "Create new user in the system",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User that you want to create",
+            "schema": {
+              "$ref": "#/definitions/UserRequestModel"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "New user created",
+            "schema": {
+              "$ref": "#/definitions/UserResponseModel"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "UserRequestModel": {
+      "required": ["email", "password"],
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "minLength": 5,
+          "maxLength": 150,
+          "example": "u001@domain.com"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 6
+        }
+      }
+    },
+    "UserResponseModel": {
+      "properties": {
+        "id": {
+          "type": "objectid",
+          "example": "507f1f77bcf86cd799439011"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "example": "u001@domain.com"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-02-25T10:03:46.000Z"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-02-25T10:03:46.000Z"
+        }
+      }
+    }
+  }
+}
