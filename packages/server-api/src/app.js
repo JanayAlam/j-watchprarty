@@ -1,5 +1,5 @@
 const express = require('express');
-const configureMiddlewares = require('./api/middlewares');
+const configureMiddlewares = require('./api/middlewares/configure-middlewares');
 const configureSwagger = require('./api/docs');
 const configureError = require('./api/errors');
 

@@ -31,7 +31,7 @@
             "in": "body",
             "description": "User that you want to create",
             "schema": {
-              "$ref": "#/definitions/UserRequestModel"
+              "$ref": "#/definitions/UserPostRequestModel"
             }
           }
         ],
@@ -48,8 +48,8 @@
     }
   },
   "definitions": {
-    "UserRequestModel": {
-      "required": ["email", "password"],
+    "UserPostRequestModel": {
+      "required": ["email", "password", "confirmPassword"],
       "properties": {
         "email": {
           "type": "string",
@@ -59,6 +59,10 @@
           "example": "u001@domain.com"
         },
         "password": {
+          "type": "string",
+          "minLength": 6
+        },
+        "confirmPassword": {
           "type": "string",
           "minLength": 6
         }

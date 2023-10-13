@@ -1,4 +1,5 @@
 const authRouter = require('./v1/auth-router');
+const userRouter = require('./v1/user-router');
 
 // api version
 const version = 'v1';
@@ -8,6 +9,10 @@ const routes = [
   {
     path: '/auth',
     router: authRouter,
+  },
+  {
+    path: '/users',
+    router: userRouter,
   },
 ];
 

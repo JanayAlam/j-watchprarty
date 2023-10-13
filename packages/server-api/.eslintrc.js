@@ -24,5 +24,11 @@ module.exports = {
     'linebreak-style': 0,
     'operator-linebreak': 'off',
     'import/no-extraneous-dependencies': 0,
+    'newline-per-chained-call': [
+      'error',
+      {
+        ignoreChainWithDepth: 8,
+      },
+    ],
   },
 };
