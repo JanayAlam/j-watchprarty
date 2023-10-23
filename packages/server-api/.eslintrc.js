@@ -23,6 +23,8 @@ module.exports = {
     'no-console': 'warn',
     'linebreak-style': 0,
     'operator-linebreak': 'off',
+    'object-curly-newline': 0,
+    'no-underscore-dangle': 0,
     'import/no-extraneous-dependencies': 0,
     'newline-per-chained-call': [
       'error',

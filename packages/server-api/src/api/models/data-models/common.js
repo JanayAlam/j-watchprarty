@@ -28,7 +28,7 @@ const store = async (modelName, payload) => {
 };
 
 /**
- * Get a record by it's properties.
+ * Get a records by it's properties.
  * @param {string} modelName the name of the model
  * @param {Object} payload {default={}} the query object that will be used to fetch the record
  * @returns {Array<Object>|[]} the fetched data
@@ -64,7 +64,7 @@ const updateById = async (modelName, id, payload) => {
  * @returns {boolean} true if the data deletion is successful otherwise false
  * @throws Error
  */
-const deleteById = async (modelName, id) => {
+const removeById = async (modelName, id) => {
   if (!isValidMongooseId(id)) return false;
   const data = await mongoose.models[modelName].findOneAndDelete({ _id: id });
   return !!data;
@@ -75,5 +75,5 @@ module.exports = {
   store,
   getByProperties,
   updateById,
-  deleteById,
+  removeById,
 };

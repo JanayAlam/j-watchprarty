@@ -1,5 +1,5 @@
-const userPostRequestSchema = require('./user-request-models/user-post-request-schema');
+const registerUserRequestSchema = require('./auth-request-models/register-user-request-schema');
 
 module.exports = {
-  userPostRequestSchema,
+  registerUserRequestSchema,
 };
