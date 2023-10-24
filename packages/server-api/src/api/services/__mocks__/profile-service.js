@@ -6,7 +6,10 @@ const profiles = {};
 /**
  * Mock function for storing the profile in the database
  * @param {{
- *  firstName: string, lastName: string, profilePhoto: string, userId: mongoose.Types.ObjectId
+ *  firstName: string,
+ *  lastName: string,
+ *  profilePhoto: string,
+ *  userId: mongoose.Types.ObjectId
  * }} payload
  * @returns {ProfileResponseModel}
  */

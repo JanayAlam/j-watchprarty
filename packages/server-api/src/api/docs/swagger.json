@@ -57,6 +57,49 @@
           }
         }
       }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [ "Auth" ],
+        "description": "Login to an existing account in the system",
+        "parameters": [
+          {
+            "name": "auth",
+            "in": "body",
+            "description": "Account information that you want to login",
+            "schema": {
+              "$ref": "#/definitions/LoginRequestModel"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "New account created",
+            "schema": {
+              "$ref": "#/definitions/LoginResponseModel"
+            }
+          },
+          "400": {
+            "description": "Invalid request body",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          },
+          "401": {
+            "description": "Invalid email address or password",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          },
+          "500": {
+            "description": "Unhandled error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -97,6 +140,34 @@
         "message": {
           "type": "string",
           "example": "Account created successfully"
+        }
+      }
+    },
+    "LoginRequestModel": {
+      "required": ["email", "password"],
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "minLength": 5,
+          "maxLength": 150,
+          "example": "u001@domain.com"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 6
+        }
+      }
+    },
+    "LoginResponseModel": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Login successful"
+        },
+        "token": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzghOGZmMjI3MmFiNzViMTQ3MWE3MSIsImVtZWlsIjoiZXhhbXBsZUBkb21haW4uY29tIiwiaWF0IjoxNjk4MTc2MDk1LCJleHAiOjE2OTgzNDg4OTV9.mwd1x2zz1uSVer_ofRyLag6QX9T-ofojETf8fsE4h81"
         }
       }
     },

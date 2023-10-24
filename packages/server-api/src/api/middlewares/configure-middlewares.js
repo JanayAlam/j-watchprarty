@@ -4,7 +4,7 @@ const cors = require('cors');
 const passport = require('passport');
 
 const configureRoutes = require('../routes');
-const jwtStrategy = require('./configurations/jwtStrategy');
+const jwtStrategy = require('./configurations/jwt-strategy');
 
 /**
  * Configure all middlewares for the provided application instance.

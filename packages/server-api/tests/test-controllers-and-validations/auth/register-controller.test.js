@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
-const testConfig = require('../test.config');
+const testConfig = require('../../test.config');
 
 const request = testConfig();
 
-jest.mock('../../src/api/services/user-service.js');
-jest.mock('../../src/api/services/profile-service.js');
+jest.mock('../../../src/api/services/user-service.js');
+jest.mock('../../../src/api/services/profile-service.js');
 
 const BASE_URI = '/api/v1/auth';
 
@@ -14,17 +14,17 @@ describe('POST /auth/register', () => {
   it('should response with 201 status code for valid request body', async () => {
     const body1 = {
       firstName: 'Test',
-      lastName: 'User 2',
-      email: 'test2@gmail.com',
-      password: 'Alam12',
-      confirmPassword: 'Alam12',
+      lastName: 'User 1',
+      email: 'registertest1@gmail.com',
+      password: 'hiiamjanay',
+      confirmPassword: 'hiiamjanay',
     };
     const body2 = {
       firstName: 'Test',
-      lastName: 'User 1',
-      email: 'test1@gmail.com',
-      password: 'hiiamjanay',
-      confirmPassword: 'hiiamjanay',
+      lastName: 'User 2',
+      email: 'registertest2@gmail.com',
+      password: 'Alam12',
+      confirmPassword: 'Alam12',
     };
 
     const res1 = await request.post(URL).send(body1);
