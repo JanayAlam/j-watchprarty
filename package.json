@@ -11,7 +11,8 @@
     "lint:check": "lerna run lint:check",
     "lint:fix": "lerna run lint:fix",
     "dev": "lerna run dev",
-    "start": "lerna run start"
+    "start": "lerna run start",
+    "test": "lerna run test"
   },
   "private": true,
   "devDependencies": {

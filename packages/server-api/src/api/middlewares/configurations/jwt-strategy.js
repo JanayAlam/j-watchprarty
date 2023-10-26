@@ -1,5 +1,6 @@
 const passportJWT = require('passport-jwt');
-const models = require('../../models/data-models');
+const UnauthorizeError = require('../../errors/api-errors/UnauthorizeError');
+const { User } = require('../../models/data-models');
 
 const { Strategy: JwtStrategy } = passportJWT;
 const { ExtractJwt } = passportJWT;
@@ -13,16 +14,19 @@ const JWTOptions = {
 };
 
 // configuring the passport js
-const jwtStrategy = new JwtStrategy(JWTOptions, (JWTPayload, done) => {
+const jwtStrategy = new JwtStrategy(JWTOptions, async (JWTPayload, done) => {
   // finding the user from the database
-  models.User.findOne({ id: JWTPayload.id }, (err, user) => {
-    if (err || !user) {
-      // invalid token
-      return done(err, false);
+  try {
+    const user = await User.findById(JWTPayload.id);
+    if (!user) {
+      throw new UnauthorizeError('Invalid token');
     }
     // valid token
     return done(null, user);
-  });
+  } catch (err) {
+    // invalid token
+    return done(err, false);
+  }
 });
 
 module.exports = jwtStrategy;

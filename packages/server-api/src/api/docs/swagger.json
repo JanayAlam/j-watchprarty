@@ -13,34 +13,131 @@
   "basePath": "/api/v1",
   "tags": [
     {
-      "name": "Users",
-      "description": "API for the users in the system"
+      "name": "Auth",
+      "description": "API for the authentication in the system"
     }
   ],
   "schemas": ["http"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
-    "/users": {
+    "/auth/register": {
       "post": {
-        "tags": [ "Users" ],
-        "description": "Create new user in the system",
+        "tags": ["Auth"],
+        "description": "Create new account in the system",
         "parameters": [
           {
-            "name": "user",
+            "name": "auth",
             "in": "body",
-            "description": "User that you want to create",
+            "description": "Account that you want to create",
             "schema": {
-              "$ref": "#/definitions/UserPostRequestModel"
+              "$ref": "#/definitions/RegisterRequestModel"
             }
           }
         ],
         "produces": ["application/json"],
         "responses": {
           "201": {
-            "description": "New user created",
+            "description": "New account created",
             "schema": {
-              "$ref": "#/definitions/UserResponseModel"
+              "$ref": "#/definitions/RegisterResponseModel"
+            }
+          },
+          "400": {
+            "description": "Invalid request body",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          },
+          "500": {
+            "description": "Unhandled error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "description": "Login to an existing account in the system",
+        "parameters": [
+          {
+            "name": "auth",
+            "in": "body",
+            "description": "Account information that you want to login",
+            "schema": {
+              "$ref": "#/definitions/LoginRequestModel"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "New account created",
+            "schema": {
+              "$ref": "#/definitions/LoginResponseModel"
+            }
+          },
+          "400": {
+            "description": "Invalid request body",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          },
+          "401": {
+            "description": "Invalid email address or password",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          },
+          "500": {
+            "description": "Unhandled error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        }
+      }
+    },
+    "/auth/user": {
+      "get": {
+        "tags": ["Auth"],
+        "description": "Get the logged in user in the system",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT bearer token",
+            "type": "string",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzgxOGZmMjI3MmFiNzViMTQ3MWE3MSIsImVtYWlsIjoiZXhhbXBsZUBkb21haW4uY29tIiwiaWF0IjoxNjk4MzQxMDI0LCJleHAiOjE2OTg1MTM4MjR9.yRn3_KbkUvBjfacQqSrNz_1N4mvcgMWhEhN0vLdx7po"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the logged in user",
+            "schema": {
+              "$ref": "#/definitions/UserResponseModel",
+              "properties": {
+                "profile": {
+                  "$ref": "#/definitions/ProfileResponseModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid jwt token",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          },
+          "500": {
+            "description": "Unhandled error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
             }
           }
         }
@@ -48,9 +145,27 @@
     }
   },
   "definitions": {
-    "UserPostRequestModel": {
-      "required": ["email", "password", "confirmPassword"],
+    "RegisterRequestModel": {
+      "required": [
+        "lastName",
+        "firstName",
+        "email",
+        "password",
+        "confirmPassword"
+      ],
       "properties": {
+        "firstName": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 30,
+          "example": "First Name"
+        },
+        "lastName": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 30,
+          "example": "Last Name"
+        },
         "email": {
           "type": "string",
           "format": "email",
@@ -68,24 +183,104 @@
         }
       }
     },
-    "UserResponseModel": {
+    "RegisterResponseModel": {
       "properties": {
-        "id": {
-          "type": "objectid",
-          "example": "507f1f77bcf86cd799439011"
-        },
+        "message": {
+          "type": "string",
+          "example": "Account created successfully"
+        }
+      }
+    },
+    "LoginRequestModel": {
+      "required": ["email", "password"],
+      "properties": {
         "email": {
           "type": "string",
           "format": "email",
+          "minLength": 5,
+          "maxLength": 150,
+          "example": "u001@domain.com"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 6
+        }
+      }
+    },
+    "LoginResponseModel": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Login successful"
+        },
+        "token": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzghOGZmMjI3MmFiNzViMTQ3MWE3MSIsImVtZWlsIjoiZXhhbXBsZUBkb21haW4uY29tIiwiaWF0IjoxNjk4MTc2MDk1LCJleHAiOjE2OTgzNDg4OTV9.mwd1x2zz1uSVer_ofRyLag6QX9T-ofojETf8fsE4h81"
+        }
+      }
+    },
+    "UserResponseModel": {
+      "properties": {
+        "id": {
+          "type": "ObjectId",
+          "example": "653818ff2272ab75b1471a71"
+        },
+        "email": {
+          "type": "string",
           "example": "u001@domain.com"
         },
         "updatedAt": {
-          "type": "string",
-          "example": "2021-02-25T10:03:46.000Z"
+          "type": "date",
+          "example": "2023-10-24T19:20:31.055Z"
         },
         "createdAt": {
+          "type": "date",
+          "example": "2023-10-24T19:20:31.055Z"
+        }
+      }
+    },
+    "ProfileResponseModel": {
+      "properties": {
+        "id": {
+          "type": "ObjectId",
+          "example": "653818ff2272ab75b1471a72"
+        },
+        "firstName": {
           "type": "string",
-          "example": "2021-02-25T10:03:46.000Z"
+          "example": "Janay"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Alam"
+        },
+        "profilePhoto": {
+          "type": "string",
+          "example": "images/u1-20231024-3-p.jpg"
+        },
+        "user": {
+          "type": "ObjectId",
+          "example": "653818ff2272ab75b1471a71"
+        },
+        "updatedAt": {
+          "type": "date",
+          "example": "2023-10-24T19:20:31.055Z"
+        },
+        "createdAt": {
+          "type": "date",
+          "example": "2023-10-24T19:20:31.055Z"
+        }
+      }
+    },
+    "ErrorResponseModel": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "definitions": "Error type",
+          "example": "ErrorType"
+        },
+        "message": {
+          "type": "string",
+          "example": "An error message"
         }
       }
     }

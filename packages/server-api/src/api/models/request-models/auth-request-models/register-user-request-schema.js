@@ -1,6 +1,8 @@
 const Joi = require('joi');
 
-const userPostRequestSchema = Joi.object({
+const registerUserRequestSchema = Joi.object({
+  firstName: Joi.string().trim().min(2).max(30).required(),
+  lastName: Joi.string().trim().min(2).max(30).required(),
   email: Joi.string().email().trim().min(5).max(150).required(),
   password: Joi.string().trim().min(6).required(),
   confirmPassword: Joi.string()
@@ -16,4 +18,4 @@ const userPostRequestSchema = Joi.object({
     }),
 });
 
-module.exports = userPostRequestSchema;
+module.exports = registerUserRequestSchema;
