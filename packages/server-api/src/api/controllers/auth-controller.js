@@ -5,10 +5,12 @@ const {
   remove: removeUser,
   _getUserRawObjectByEmail,
 } = require('../services/user-service');
+const { get: getProfileByProperties } = require('../services/profile-service');
 const { store: storeProfile } = require('../services/profile-service');
 const NotFoundError = require('../errors/api-errors/NotFoundError');
 const UnauthorizeError = require('../errors/api-errors/UnauthorizeError');
 const InternalServerError = require('../errors/api-errors/InternalServerError');
+const { UserResponseModel } = require('../models/response-models');
 
 const register = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
@@ -69,4 +71,18 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login };
+const getLoggedInUser = async (req, res, next) => {
+  try {
+    const { user } = req;
+    console.log('Controller');
+    const profile = await getProfileByProperties({ user: user._id });
+    return res.status(200).json({
+      ...new UserResponseModel(user),
+      profile,
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+module.exports = { register, login, getLoggedInUser };

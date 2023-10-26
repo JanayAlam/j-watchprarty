@@ -12,7 +12,7 @@ const UnauthorizeError = require('../errors/api-errors/UnauthorizeError');
 const isAuthenticated = (req, res, next) => {
   passport.authenticate('jwt', (err, user) => {
     if (err) return next(err);
-    if (!user) throw new UnauthorizeError('Unauthorize access denied');
+    if (!user) throw new UnauthorizeError('Unauthorize');
     req.user = user;
     return next();
   })(req, res, next);

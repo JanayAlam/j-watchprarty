@@ -23,7 +23,7 @@
   "paths": {
     "/auth/register": {
       "post": {
-        "tags": [ "Auth" ],
+        "tags": ["Auth"],
         "description": "Create new account in the system",
         "parameters": [
           {
@@ -60,7 +60,7 @@
     },
     "/auth/login": {
       "post": {
-        "tags": [ "Auth" ],
+        "tags": ["Auth"],
         "description": "Login to an existing account in the system",
         "parameters": [
           {
@@ -100,11 +100,59 @@
           }
         }
       }
+    },
+    "/auth/user": {
+      "get": {
+        "tags": ["Auth"],
+        "description": "Get the logged in user in the system",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT bearer token",
+            "type": "string",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzgxOGZmMjI3MmFiNzViMTQ3MWE3MSIsImVtYWlsIjoiZXhhbXBsZUBkb21haW4uY29tIiwiaWF0IjoxNjk4MzQxMDI0LCJleHAiOjE2OTg1MTM4MjR9.yRn3_KbkUvBjfacQqSrNz_1N4mvcgMWhEhN0vLdx7po"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the logged in user",
+            "schema": {
+              "$ref": "#/definitions/UserResponseModel",
+              "properties": {
+                "profile": {
+                  "$ref": "#/definitions/ProfileResponseModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid jwt token",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          },
+          "500": {
+            "description": "Unhandled error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseModel"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
     "RegisterRequestModel": {
-      "required": ["lastName", "firstName", "email", "password", "confirmPassword"],
+      "required": [
+        "lastName",
+        "firstName",
+        "email",
+        "password",
+        "confirmPassword"
+      ],
       "properties": {
         "firstName": {
           "type": "string",
@@ -168,6 +216,58 @@
         "token": {
           "type": "string",
           "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzghOGZmMjI3MmFiNzViMTQ3MWE3MSIsImVtZWlsIjoiZXhhbXBsZUBkb21haW4uY29tIiwiaWF0IjoxNjk4MTc2MDk1LCJleHAiOjE2OTgzNDg4OTV9.mwd1x2zz1uSVer_ofRyLag6QX9T-ofojETf8fsE4h81"
+        }
+      }
+    },
+    "UserResponseModel": {
+      "properties": {
+        "id": {
+          "type": "ObjectId",
+          "example": "653818ff2272ab75b1471a71"
+        },
+        "email": {
+          "type": "string",
+          "example": "u001@domain.com"
+        },
+        "updatedAt": {
+          "type": "date",
+          "example": "2023-10-24T19:20:31.055Z"
+        },
+        "createdAt": {
+          "type": "date",
+          "example": "2023-10-24T19:20:31.055Z"
+        }
+      }
+    },
+    "ProfileResponseModel": {
+      "properties": {
+        "id": {
+          "type": "ObjectId",
+          "example": "653818ff2272ab75b1471a72"
+        },
+        "firstName": {
+          "type": "string",
+          "example": "Janay"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Alam"
+        },
+        "profilePhoto": {
+          "type": "string",
+          "example": "images/u1-20231024-3-p.jpg"
+        },
+        "user": {
+          "type": "ObjectId",
+          "example": "653818ff2272ab75b1471a71"
+        },
+        "updatedAt": {
+          "type": "date",
+          "example": "2023-10-24T19:20:31.055Z"
+        },
+        "createdAt": {
+          "type": "date",
+          "example": "2023-10-24T19:20:31.055Z"
         }
       }
     },
