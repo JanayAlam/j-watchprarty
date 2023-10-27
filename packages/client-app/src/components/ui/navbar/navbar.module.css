@@ -1,0 +1,33 @@
+.navBox {
+  flex-grow: 1;
+}
+
+.navAppBar {
+  border-bottom: 1px solid #ddd;
+  box-shadow: none !important;
+  margin-bottom: 0.5rem;
+  justify-content: space-between;
+}
+
+.brandLogoContainer {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  cursor: pointer;
+}
+
+.brandLogoImage {
+  height: 25px;
+}
+
+.brandLogoText {
+  color: #4850c7;
+  font-weight: bold;
+}
+
+.navAuthButtons {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: end;
+}
