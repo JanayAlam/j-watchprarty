@@ -4,24 +4,45 @@ import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { Link as RouterLink } from 'react-router-dom';
 
-const DrawerComponent: React.FC = () => {
+interface NavButtonObjectProps {
+  id: string;
+  label: string;
+  to: string;
+  endIcon: React.ReactNode;
+}
+
+interface DrawerComponentProps {
+  navButtonsObj: Array<NavButtonObjectProps>;
+}
+
+const DrawerComponent: React.FC<DrawerComponentProps> = ({ navButtonsObj }) => {
   const [open, setOpen] = useState(false);
+
+  const closeModal = () => setOpen(false);
 
   return (
     <>
-      <Drawer open={open} onClose={() => setOpen(false)} anchor={'top'}>
+      <Drawer open={open} onClose={closeModal} anchor={'top'}>
         <List>
-          <ListItemButton>
-            <ListItemIcon></ListItemIcon>
-            <ListItemText>Login</ListItemText>
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon></ListItemIcon>
-            <ListItemText>Register</ListItemText>
-          </ListItemButton>
+          {navButtonsObj.map((btnObj) => {
+            const linkProps = {
+              to: btnObj.to ? btnObj.to : undefined,
+              component: btnObj.to ? RouterLink : undefined,
+            };
+            return (
+              <ListItemButton
+                key={btnObj.id}
+                sx={{ textAlign: 'center' }}
+                {...linkProps}
+                onClick={closeModal}
+              >
+                <ListItemText>{btnObj.label}</ListItemText>
+              </ListItemButton>
+            );
+          })}
         </List>
       </Drawer>
       <IconButton

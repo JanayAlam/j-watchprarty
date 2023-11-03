@@ -11,9 +11,11 @@
 
 .brandLogoContainer {
   display: flex;
-  gap: 0.8rem;
+  gap: 0.5rem;
+  align-self: center;
   align-items: center;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .brandLogoImage {
@@ -21,13 +23,13 @@
 }
 
 .brandLogoText {
-  color: #4850c7;
+  color: #3f50b5;
   font-weight: bold;
 }
 
 .navAuthButtons {
   display: flex;
-  gap: 0.8rem;
+  gap: 0.5rem;
   align-items: center;
   justify-content: end;
 }
