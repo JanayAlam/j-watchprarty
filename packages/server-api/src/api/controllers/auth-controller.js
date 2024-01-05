@@ -74,7 +74,6 @@ const login = async (req, res, next) => {
 const getLoggedInUser = async (req, res, next) => {
   try {
     const { user } = req;
-    console.log('Controller');
     const profile = await getProfileByProperties({ user: user._id });
     return res.status(200).json({
       ...new UserResponseModel(user),
